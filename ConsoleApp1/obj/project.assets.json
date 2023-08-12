@@ -3049,11 +3049,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kev_e\\OneDrive\\Desktop\\Test\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "C:\\Users\\kev_e\\OneDrive\\Desktop\\Test\\SpeerTech\\ConsoleApp1\\ConsoleApp1.csproj",
       "projectName": "ConsoleApp1",
-      "projectPath": "C:\\Users\\kev_e\\OneDrive\\Desktop\\Test\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectPath": "C:\\Users\\kev_e\\OneDrive\\Desktop\\Test\\SpeerTech\\ConsoleApp1\\ConsoleApp1.csproj",
       "packagesPath": "C:\\Users\\kev_e\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kev_e\\OneDrive\\Desktop\\Test\\ConsoleApp1\\ConsoleApp1\\obj\\",
+      "outputPath": "C:\\Users\\kev_e\\OneDrive\\Desktop\\Test\\SpeerTech\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

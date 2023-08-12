@@ -1,61 +1,62 @@
-﻿using HtmlAgilityPack;
+﻿//****************************************//
+//      Kevin Eduardo Curiel Justo        //
+//             11-08-2023                 //
+//****************************************//
+
+using HtmlAgilityPack;
 using CsvHelper;
 using System.Globalization;
-using static SimpleWebScraper.Program;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics;
-using System;
-using CsvHelper.Configuration.Attributes;
 
 namespace SimpleWebScraper
 {
     class Program
     {
+        //class for the List data structure to create the .csv
         public class HtmlLink
         {
             public string? Url { get; set; }
             public int? Duplicates { get; set; }
         }
 
-
+        //Function that looks for the first 10 unique imbeded links on page
         static void AddLinks(List<HtmlLink> htmlLinks, HtmlWeb web, string link)
         {
+            //Loads the page information
             var currentDocument = web.Load(link);
 
             //looks for imbeded links using xpath of wikipedia pages
             HtmlNodeCollection pHTMLElements;
-            pHTMLElements = currentDocument.DocumentNode.SelectNodes("//*[@id=\"mw-content-text\"]//p/a");
+            pHTMLElements = currentDocument.DocumentNode.SelectNodes("//*[@id=\"mw-content-text\"]//p/a[@class=\"mw-redirect\"]");
 
+            //Returns early if no imbeded links are found
             if (pHTMLElements == null)
             {
                 return;
             }
 
-            int count = 10;
             //Condition if there are less than 10 links on the page
+            int count = 10;
             if (pHTMLElements.Count < 10)
             {
                 count = pHTMLElements.Count;
             }
 
+            //loop to create list of imbeded links
             int x = 0;
             int loops = 1;
-            
-            //loop to create list of imbeded links
             while (loops <= count)
             {
-
+                //Looks for the href value in the x element of the pHTMLElements found
                 var hrefElement = HtmlEntity.DeEntitize(pHTMLElements[x].QuerySelector("a").Attributes["href"].Value.ToString());
                 string hrefURL = "https://en.wikipedia.org" + hrefElement;
 
-                bool unique = true;
-
                 //loop to verrify duplicates links
+                bool unique = true;
                 for (int j = 0; j <= htmlLinks.Count - 1; j++)
                 {
                     if (htmlLinks[j].Url == hrefURL)
                     {
+                        //If not unique, adds 1 to the duplicate counter of the found link and makes the unique bool false
                         htmlLinks[j].Duplicates += 1;
                         unique = false;
                     }
@@ -63,12 +64,15 @@ namespace SimpleWebScraper
 
                 if (unique)
                 {
+                    //inserts the unique link found on the htmlLinks List of htmlLink objects
                     var htmlLink = new HtmlLink() { Url = hrefURL, Duplicates = 0 };
                     htmlLinks.Add(htmlLink);
                     loops++;
                 }
 
                 x++;
+
+                //Condition to end early if there are no more unique links on the page
                 if (x >= pHTMLElements.Count)
                 {
                     break;
@@ -110,12 +114,11 @@ namespace SimpleWebScraper
 
             //Variables used to start web scraping
             var web = new HtmlWeb();
-
             web.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36";
 
             //n is variable for loops of imbeded link searches
             int n = 0;
-            
+
             //Request and Verification of n
             while (true)
             {
@@ -138,20 +141,23 @@ namespace SimpleWebScraper
                 }
             }
 
-            //loads the link provided to scrape for links
-
+            //loads the link provided to scrape for imbeded links
             AddLinks(htmlLinks, web, link);
 
             int j = 0;
             //Outer loop for link scraping using n provided
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < n; i++)
+            {
 
+                //Variable to determine loop; this updates after finishing with n cycle of loops, as the list will update automatically in the AddLinks function 
                 int count = htmlLinks.Count;
 
-                while (j < count-1)
+                while (j <= count - 1)
                 {
+                    //updates the variable link with the next link on list
                     link = htmlLinks[j].Url;
 
+                    //Calls the AddLinks function with the new link
                     AddLinks(htmlLinks, web, link);
                     j++;
                 }
