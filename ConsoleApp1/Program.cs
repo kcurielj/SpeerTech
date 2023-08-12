@@ -164,6 +164,7 @@ namespace SimpleWebScraper
             }
             // initializing the CSV output file 
             using (var writer = new StreamWriter("html-links.csv"))
+            
             // initializing the CSV writer 
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
